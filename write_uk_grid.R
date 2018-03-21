@@ -1,10 +1,11 @@
 library(ggplot2)
 library(gridExtra)
 library(viridis)
-# devtools::install_github("jbaileyh/geogrid")
+#devtools::install_github("jbaileyh/geogrid")
 library(geogrid)
+library(tidyverse)
 
-input_file <- "~/gis/boundary/Data/GB/district_borough_unitary_region.shp"
+input_file <- "../bdline/Data/GB/district_borough_unitary_region.shp"
 
 original_shapes <- read_polygons(input_file)
 
@@ -39,3 +40,6 @@ clean <- function(shape) {
 new_cells_reg <- calculate_grid(shape = original_shapes, grid_type = "regular", seed = 2)
 resultreg <- assign_polygons(original_shapes, new_cells_reg)
 result_df_reg <- clean(resultreg)
+
+uk_grid <- result_df_reg %>% select(CODE, NAME, row, col) %>% rename(name=NAME, code=CODE) %>% unique()
+save(uk_grid, file="ukgrid.Rdata")

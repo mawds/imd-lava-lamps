@@ -5,6 +5,8 @@ library(magrittr)
 library(dplyr)
 library(geofacet)
 
+load("ukgrid.RData")
+
 ### ENGLAND
 ## Get the data
 
@@ -77,6 +79,18 @@ l <- lsoa_la_imd_vingtile_noscilly %>%
   theme_classic() + theme(plot.subtitle = element_text(color = 'white', size = 18, face='italic'),plot.title = element_text(color = "white",size=26),strip.background = element_rect(fill = 'black'),strip.text = element_text(color='white',size=12),axis.text.y = element_blank(),axis.ticks.y = element_blank(), axis.title.y = element_blank(),axis.text.x = element_blank(),axis.ticks.x = element_blank(),axis.title.x=element_blank(), legend.position="none",axis.title = element_text(color="white",size=12),plot.background=element_rect(fill="black"),panel.background = element_rect(fill="black"))
 
 ggsave("london.png",l,width=18,height=18,units="in")
+
+## UK geographically
+# Not strictly necessary to filter to only areas included in the grid but 
+# it avoids a warning message
+ukgeo <- lsoa_la_imd_vingtile_noscilly %>% 
+  ggplot(aes(1, vingtile, fill=la)) +
+  geom_violin(color="white") + 
+  ggtitle("UK Local Authority Deprivation Profiles",subtitle="These charts show the distribution of Lower Super Output Areas by deprivation in London. \nA fatter bottom indicates proportionally more more-deprived LSOAs. A fatter head indicate more less-deprived LSOAs. \n\n@northernjamie @DaveMawdsley") +
+  facet_geo(~la, grid=uk_grid, label="name") +
+  theme_classic() + theme(plot.subtitle = element_text(color = 'white', size = 18, face='italic'),plot.title = element_text(color = "white",size=26),strip.background = element_rect(fill = 'black'),strip.text = element_text(color='white',size=12),axis.text.y = element_blank(),axis.ticks.y = element_blank(), axis.title.y = element_blank(),axis.text.x = element_blank(),axis.ticks.x = element_blank(),axis.title.x=element_blank(), legend.position="none",axis.title = element_text(color="white",size=12),plot.background=element_rect(fill="black"),panel.background = element_rect(fill="black"))
+
+ggsave("ukgeo.pdf",ukgeo, width=18,height=36,units="in")
 
 ### Wales
 
