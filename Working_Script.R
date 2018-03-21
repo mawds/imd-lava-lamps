@@ -5,7 +5,7 @@ library(magrittr)
 library(dplyr)
 library(geofacet)
 
-load("ukgrid.RData")
+load("ukgrid.Rdata")
 
 ### ENGLAND
 ## Get the data
